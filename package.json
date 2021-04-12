@@ -6,8 +6,8 @@
   "author": "Santhosh GL <santhosh.gl@synduit.com>",
   "private": true,
   "scripts": {
-    "heroku-postbuild": "yarn && yarn build",
     "build": "quasar build",
+    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build",
     "start": "node server.js"
   },
   "dependencies": {
@@ -22,7 +22,8 @@
     "serve-static": "^1.14.1"
   },
   "devDependencies": {
-    "@quasar/app": "^2.0.0"
+    "@quasar/app": "^2.0.0",
+    "quasar-cli": "^0.15.2"
   },
   "browserslist": [
     "last 10 Chrome versions",
