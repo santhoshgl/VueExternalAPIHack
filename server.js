@@ -1,11 +1,11 @@
-const express = require("express");
-const port = process.env.PORT || 8080;
-const app = express();
+const
+  express = require('express'),
+  serveStatic = require('serve-static'),
+  history = require('connect-history-api-fallback'),
+  port = process.env.PORT || 5000
 
-app.use(express.static(__dirname + "/dist/"));
-app.get(/.*/, function(req, res) {
-  res.sendfile(__dirname + "/dist/index.html");
-});
-app.listen(port);
+const app = express()
 
-console.log("Server started...");
+app.use(history())
+app.use(serveStatic(__dirname + '/dist/spa'))
+app.listen(port)

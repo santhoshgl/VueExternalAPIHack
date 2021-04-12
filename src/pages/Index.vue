@@ -60,139 +60,141 @@
 </template>
 
 <script>
-import axios from "axios";
-import randomIp from "random-ip";
+import axios from 'axios'
+import randomIp from 'random-ip'
 
 export default {
-  name: "PageIndex",
+  name: 'PageIndex',
   data() {
     return {
       count: 100,
       showVoting: false,
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       isPwd: true,
       userDetails: {
-        id: "",
-        name: "",
-        email: "",
-        token: "",
-      },
-    };
+        id: '',
+        name: '',
+        email: '',
+        token: ''
+      }
+    }
   },
   methods: {
     getAccessToken() {
       const data = {
-        type: "traditional",
-        deviceId: "Macintosh",
-        deviceBrand: "PC/MAC",
-        data: { email: this.email, password: this.password },
-      };
+        type: 'traditional',
+        deviceId: 'Macintosh',
+        deviceBrand: 'PC/MAC',
+        data: { email: this.email, password: this.password }
+      }
       const headers = {
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      };
+        Accept: 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      }
       axios
-        .post("https://userauth.voot.com/usersV3/v3/login", data, {
-          headers,
+        .post('https://userauth.voot.com/usersV3/v3/login', data, {
+          headers
         })
         .then(({ data }) => {
-          console.log(data);
+          console.log(data)
           const {
             uId,
             email,
             firstName,
-            authToken: { accessToken: token },
-          } = data.data;
-          this.userDetails.email = email;
-          this.userDetails.id = uId;
-          this.userDetails.token = token;
-          this.userDetails.name = firstName;
-          console.log(this.userDetails);
+            authToken: { accessToken: token }
+          } = data.data
+          this.userDetails.email = email
+          this.userDetails.id = uId
+          this.userDetails.token = token
+          this.userDetails.name = firstName
+          console.log(this.userDetails)
           this.$q.notify({
-            position: "top",
-            type: "positive",
-            message: `Successfully Fetched the user details. Please click on the voting button.`,
-          });
-          this.showVoting = true;
+            position: 'top',
+            type: 'positive',
+            message: `Successfully Fetched the user details. Please click on the voting button.`
+          })
+          this.showVoting = true
         })
-        .catch((error) => {
+        .catch(error => {
           this.$q.notify({
-            position: "top",
-            type: "negative",
-            message: `Could not vote shamanth`,
-          });
-          console.log(error);
-        });
+            position: 'top',
+            type: 'negative',
+            message: `Could not vote shamanth`
+          })
+          console.log(error)
+        })
     },
     voteForShamanth() {
-      const IP = randomIp("103.98.78.103", 16, 24);
-      console.log(IP);
+      const IP = randomIp('103.98.78.103', 16, 24)
+      console.log(IP)
       const headers = {
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      };
+        Accept: 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        CLIENT_REAL_IP: IP
+      }
 
       const data = {
-        showId: "6b3d31e0-7b1e-11eb-a1af-d93c47ce2886",
-        showName: "BBK Voting",
-        categoryId: "",
-        categoryName: "",
-        contestantId: "c0d4b460-7b1f-11eb-a1af-d93c47ce2886",
-        contestantName: "Shamanth",
-        cycleId: "9c792960-9141-11eb-a1af-d93c47ce2886",
+        showId: '6b3d31e0-7b1e-11eb-a1af-d93c47ce2886',
+        showName: 'BBK Voting',
+        categoryId: '',
+        categoryName: '',
+        contestantId: 'c0d4b460-7b1f-11eb-a1af-d93c47ce2886',
+        contestantName: 'Shamanth',
+        cycleId: 'fa77de00-9603-11eb-a1af-d93c47ce2886',
         userId: this.userDetails.id,
         userName: this.userDetails.name,
+        //userEmail: +this.count + this.userDetails.email,
         userEmail: this.userDetails.email,
-        region: "in",
+        region: 'in',
         ip: IP,
-        loginProvider: "Traditional",
-        userFormDetails: "",
-        accessToken: this.userDetails.token,
-      };
+        loginProvider: 'Traditional',
+        userFormDetails: '',
+        accessToken: this.userDetails.token
+      }
 
       for (let j = 0; j < this.count; j++) {
-        let randomTime = Math.random() * 12321312321;
+        let randomTime = Math.random() * 12321312321
         setTimeout(
           () => this.voteRandomly(data, randomTime * j),
           randomTime * j
-        );
-        setTimeout(() => this.voteRandomly(data, randomTime), randomTime);
+        )
+        setTimeout(() => this.voteRandomly(data, randomTime), randomTime)
       }
     },
     voteRandomly(data, randomTime) {
-      console.log(data, randomTime);
+      console.log(data, randomTime)
       const contentType = {
-        json: "application/json",
-        form: "multipart/form-data",
-      };
+        json: 'application/json',
+        form: 'multipart/form-data'
+      }
 
       axios
-        .post("https://voting-api.voot.com/v1/addvote", data, {
+        .post('https://voting-api.voot.com/v1/addvote', data, {
           headers: {
             Accept: contentType.json,
-            "Content-Type": contentType.json,
-          },
+            'Content-Type': contentType.json
+          }
         })
         .then(({ data }) => {
-          console.log(data.id);
+          console.log(data.id)
           this.$q.notify({
-            position: "top",
-            type: "positive",
-            message: `${data.message} record ID ${data.id}`,
-          });
+            position: 'top',
+            type: 'positive',
+            message: `${data.message} record ID ${data.id}`
+          })
         })
-        .catch((error) => {
+        .catch(error => {
           this.$q.notify({
-            position: "top",
-            type: "negative",
-            message: `Could not vote shamanth ${j}`,
-          });
-          console.log(error);
-        });
-    },
-  },
-};
+            position: 'top',
+            type: 'negative',
+            message: `Could not vote shamanth ${j}`
+          })
+          console.log(error)
+        })
+    }
+  }
+}
 </script>
