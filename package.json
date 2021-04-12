@@ -6,10 +6,10 @@
   "author": "Santhosh GL <santhosh.gl@synduit.com>",
   "private": true,
   "scripts": {
+    "heroku-postbuild": "yarn && yarn build",
+    "build": "quasar build",
     "start": "node server.js"
   },
-  "build": "quasar build",
-  "heroku-postbuild": "yarn && yarn build",
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
